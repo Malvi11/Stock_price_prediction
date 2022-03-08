@@ -11,6 +11,8 @@ from pmdarima.arima import auto_arima
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 import math
 from statsmodels.tsa.arima_model import ARIMA
+import statsmodels.tsa.arima.model as stats
+
 
 st.title("Build and Deploy Stock Market App Using Streamlit")
 st.header("A Basic Data Science Web Application")
@@ -106,20 +108,18 @@ plt.legend()
 st.set_option('deprecation.showPyplotGlobalUse', False)
 st.pyplot()
 
-#---Auto_ARIMA Model----#
-model_autoARIMA = auto_arima(train_data, start_p=0, start_q=0,
-                             test='adf',        # use adftest to find optimal 'd'
-                             max_p=3, max_q=3,  # maximum p and q
-                             m=1,               # frequency of series
-                             d=None,            # let model determine 'd'
-                             seasonal=False,    # No Seasonality
-                             start_P=0,
-                             D=0,
-                             trace=True,
-                             error_action='ignore',
-                             suppress_warnings=True,
-                             stepwise=True)
-print(model_autoARIMA.summary())
-model_autoARIMA.plot_diagnostics(figsize=(15, 8))
-plt.show()
-st.pyplot(model_autoARIMA)
+model = stats.ARIMA(train_data, order=(1, 1, 2))
+result = model.fit()
+print(result.summary())
+
+#fc = mycursor.fetchall()
+#fc = pd.DataFrame(fc)
+#fc = result.forecast(321, alpha=0.05)
+
+fc, se, conf = result.forecast(321, alpha=0.05)
+#results = model.fit()
+#predictions=result.predict(start = train_data, end = train_data+test_data+(fc)-1)
+
+
+#forecast = model.predict(n_periods=len(train_data), disp=0)
+#forecast = pd.DataFrame(forecast, index=train_data.index, columns=['Prediction'])
