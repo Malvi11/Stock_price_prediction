@@ -1,1 +1,1 @@
-# pythonProject
+# Stock_price_prediction_project
